@@ -40,7 +40,6 @@ const controller = {
             const token = jwt.gerarJWT(email);
 
             Usuario
-                .create(token)
                 .then(res.status(201).json({ autenticado: true, email, token }))
                 .catch(erro => {
                     res.status(400).json({ autenticado: false,
