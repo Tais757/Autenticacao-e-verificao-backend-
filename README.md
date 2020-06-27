@@ -1,2 +1,8 @@
 # Autentica-o-e-verifica-o-backend-
 Web services de autenticação e verificação de acesso com JWT, hash e salt
+
+POST /registrar -> Realiza o registro de um novo usuário. Deve impedir o registro de usuários já registrados. O serviço deve receber no corpo da requisição o nome, e-mail e senha do usuário (nome, email, senha). A senha deve ser armazenada no banco de dados utilizando a abordagem de salt e hash. O serviço deve enviar como resposta uma mensagem textual apropriada sinalizando o que ocorreu: usuário registrado com sucesso, usuário já existente ou erro no servidor. Os HTTP statuses apropriados devem ser utilizados nas respostas;
+
+POST /login -> Realiza o login de um usuário previamente registrado. O serviço deve receber no corpo da requisição o e-mail e a senha do usuário (email, senha). A senha deve ser verificada usando a abordagem de salt e hash. Caso o usuário esteja registrado no banco de dados e sua senha esteja correta, o serviço deve retornar um token JWT baseado no e-mail do usuário e na chave secreta do seu backend, a qual você deve definir. Caso o usuário não esteja registrado no sistema OU a sua senha seja inválida, o serviço deve retornar uma mensagem sinalizando que as credenciais de usuário são inválidas. Utilize HTTPs statuses adequados para as suas respostas;
+
+GET /verificar -> Verifica se o token JWT do usuário ainda é válido. No seu backend, o token deve ter período de validade de 5 minutos. O serviço deve receber no corpo da requisição o token (token) JWT do usuário. O serviço deve retornar como resposta a flag acessoLiberado com o valor true caso o token ainda seja válido (não expirou) ou false caso contrário (expirado).
