@@ -3,18 +3,6 @@ const Usuario = require('../model/Usuario');
 const jwt = require('../util/jwt');
 
 const controller = {
-    verifica: (req, res) => {
-        const token = req.body;
-
-        if(!jwt.tokenExpirou(token)){
-            Usuario
-                .then(res.status(200).json({ acessoLiberado: true,
-                mensagem: 'O token está válido' }))
-                .catch(res.status(401).json({ acessoLiberado: false, 
-                mensagem: 'Seu token expirou' }));
-        }
-    },
-
     realizaRegistro: (req, res) => {
         const { nome, email, senha } = req.body;
 
@@ -36,17 +24,37 @@ const controller = {
     realizaLogin: (req, res) => {
         const { email, senha } = req.body;
 
-        if(email && jwt.validaSenha(email, senha)){
+        if(!email[email] || email !== senha && jwt.validarSenha ){
             const token = jwt.gerarJWT(email);
 
             Usuario
-                .then(res.status(201).json({ autenticado: true, email, token }))
+                .then(res.status(201).json({ sucess: true, email, token }))
                 .catch(erro => {
-                    res.status(400).json({ autenticado: false,
+                    res.status(400).json({ sucess: false, erro,
                          mensagem: 'Credenciais de usuário inválidas' })
                 });
         }
+    },
+
+    verifica: (req, res) => {
+        const token = req.body;
+
+        /*jwt.verify(token, config, (err, data) => {
+            if(err){
+                res.status(401).json({ acessoLiberado: false, 
+                    mensagem: 'Seu token expirou' }) 
+            }
+        }*/
+
+        if(!jwt.tokenExpirou(token)){
+            Usuario
+                .then(res.status(200).json({ acessoLiberado: true,
+                mensagem: 'O token está válido' }))
+                .catch(res.status(401).json({ acessoLiberado: false, 
+                mensagem: 'Seu token expirou' }));
+        }
     }
+
 };
 
 module.exports = controller;

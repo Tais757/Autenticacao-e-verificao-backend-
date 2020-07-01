@@ -20,6 +20,7 @@ app.use(logger('dev'));
  * no formato JSON
  */
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false})); // Entender parametros na url
 
 app.use('/', require('./routes/usuarios'));
 
